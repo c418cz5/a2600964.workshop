@@ -1,0 +1,14 @@
+E:\SODP\a2600964.workshop\HelloCSharp\bin\Debug\net10.0\HelloCSharp.exe
+E:\SODP\a2600964.workshop\HelloCSharp\bin\Debug\net10.0\HelloCSharp.deps.json
+E:\SODP\a2600964.workshop\HelloCSharp\bin\Debug\net10.0\HelloCSharp.runtimeconfig.json
+E:\SODP\a2600964.workshop\HelloCSharp\bin\Debug\net10.0\HelloCSharp.dll
+E:\SODP\a2600964.workshop\HelloCSharp\bin\Debug\net10.0\HelloCSharp.pdb
+E:\SODP\a2600964.workshop\HelloCSharp\obj\Debug\net10.0\HelloCSharp.GeneratedMSBuildEditorConfig.editorconfig
+E:\SODP\a2600964.workshop\HelloCSharp\obj\Debug\net10.0\HelloCSharp.AssemblyInfoInputs.cache
+E:\SODP\a2600964.workshop\HelloCSharp\obj\Debug\net10.0\HelloCSharp.AssemblyInfo.cs
+E:\SODP\a2600964.workshop\HelloCSharp\obj\Debug\net10.0\HelloCSharp.csproj.CoreCompileInputs.cache
+E:\SODP\a2600964.workshop\HelloCSharp\obj\Debug\net10.0\HelloCSharp.dll
+E:\SODP\a2600964.workshop\HelloCSharp\obj\Debug\net10.0\refint\HelloCSharp.dll
+E:\SODP\a2600964.workshop\HelloCSharp\obj\Debug\net10.0\HelloCSharp.pdb
+E:\SODP\a2600964.workshop\HelloCSharp\obj\Debug\net10.0\HelloCSharp.genruntimeconfig.cache
+E:\SODP\a2600964.workshop\HelloCSharp\obj\Debug\net10.0\ref\HelloCSharp.dll
