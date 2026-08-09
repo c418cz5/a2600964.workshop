@@ -8,9 +8,14 @@ class TodoApp
 
     static void Main()
     {
-        Console.WriteLine("=== Todo Manager ===");
-        Console.WriteLine("Commands: .add [item], show, remove [index], clear");
-        Console.WriteLine("          .tag [index] [name], get-tagged [tag], exit");
+        Person person = new Person("Alex", "Wang", 20);
+
+        Console.WriteLine(person.FirstName);
+        Console.WriteLine(person.LastName);
+        Console.WriteLine(person.Age);
+        Console.WriteLine(person.FullName());
+        Console.WriteLine(person.IsAdult());
+
         Console.WriteLine();
 
         while (true)
