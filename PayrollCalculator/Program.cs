@@ -1,5 +1,5 @@
-﻿Console.WriteLine("Hello, World!");
-const double TAX_RATE = 0.2;
+﻿const double TAX_RATE = 0.2;
+
 static double CalculatePay(double hours, double rate)
 {
     if (hours < 0 || rate < 0)
@@ -12,4 +12,24 @@ static double CalculatePay(double hours, double rate)
     double net = gross - tax;
 
     return net;
+}
+
+try
+{
+    Console.Write("Enter employee name: ");
+    string name = Console.ReadLine() ?? "";
+
+    Console.Write("Hours worked: ");
+    double hours = double.Parse(Console.ReadLine() ?? "0");
+
+    Console.Write("Hourly rate: ");
+    double rate = double.Parse(Console.ReadLine() ?? "0");
+
+    double netPay = CalculatePay(hours, rate);
+
+    Console.WriteLine($"{name} earned ${netPay:F2} after tax.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine("Error: " + ex.Message);
 }
