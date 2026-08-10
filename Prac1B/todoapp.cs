@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 class TodoApp
 {
@@ -27,140 +27,32 @@ class TodoApp
                 break;
 
             string[] parts = input.Split(' ', 3);
-            string cmd = parts[0];
+            string command = parts[0];
 
-            switch (cmd)
+            switch (command)
             {
                 case ".add":
-                    if (parts.Length < 2 || parts[1].Trim() == "")
-                    {
-                        Console.WriteLine("Error: .add needs an item");
-                    }
-                    else
-                    {
-                        tasks.Add(parts[1]);
-                        Console.WriteLine("Added: " + parts[1]);
-                    }
+                    AddTask(parts);
                     break;
 
                 case "show":
-                    if (tasks.Count == 0)
-                    {
-                        Console.WriteLine("Nothing in the list.");
-                    }
-                    else
-                    {
-                        for (int i = 0; i < tasks.Count; i++)
-                        {
-                            Console.WriteLine((i + 1) + ". " + tasks[i]);
-                        }
-                    }
+                    ShowTasks();
                     break;
 
                 case "remove":
-                    if (parts.Length < 2)
-                    {
-                        Console.WriteLine("Error: remove needs an index");
-                    }
-                    else
-                    {
-                        int idx;
-                        bool ok = int.TryParse(parts[1], out idx);
-                        if (!ok || idx < 1 || idx > tasks.Count)
-                        {
-                            Console.WriteLine("Error: index is not valid");
-                        }
-                        else
-                        {
-                            int realIdx = idx - 1;
-                            string removed = tasks[realIdx];
-                            tasks.RemoveAt(realIdx);
-
-                            // update all tag indices after removal
-                            foreach (var tagList in tags.Values)
-                            {
-                                tagList.Remove(realIdx);
-                                for (int i = 0; i < tagList.Count; i++)
-                                {
-                                    if (tagList[i] > realIdx)
-                                        tagList[i]--;
-                                }
-                            }
-
-                            Console.WriteLine("Removed: " + removed);
-                        }
-                    }
+                    RemoveTask(parts);
                     break;
 
                 case "clear":
-                    tasks.Clear();
-                    tags.Clear();
-                    Console.WriteLine("List cleared.");
+                    ClearTasks();
                     break;
 
                 case ".tag":
-                    if (parts.Length < 3)
-                    {
-                        Console.WriteLine("Error: .tag [index] [name]");
-                    }
-                    else
-                    {
-                        int idx;
-                        bool ok = int.TryParse(parts[1], out idx);
-                        if (!ok || idx < 1 || idx > tasks.Count)
-                        {
-                            Console.WriteLine("Error: bad index");
-                        }
-                        else
-                        {
-                            int realIdx = idx - 1;
-                            string tagName = parts[2];
-
-                            if (!tags.ContainsKey(tagName))
-                                tags[tagName] = new List<int>();
-
-                            if (tags[tagName].Contains(realIdx))
-                            {
-                                Console.WriteLine("Already tagged.");
-                            }
-                            else
-                            {
-                                tags[tagName].Add(realIdx);
-                                Console.WriteLine("Tagged item " + idx + " with '" + tagName + "'");
-                            }
-                        }
-                    }
+                    AddTag(parts);
                     break;
 
                 case "get-tagged":
-                    if (parts.Length < 2)
-                    {
-                        Console.WriteLine("Error: get-tagged [tag name]");
-                    }
-                    else
-                    {
-                        string tagName = parts[1];
-                        if (!tags.ContainsKey(tagName))
-                        {
-                            Console.WriteLine("Error: tag doesn't exist");
-                        }
-                        else
-                        {
-                            var indices = tags[tagName];
-                            if (indices.Count == 0)
-                            {
-                                Console.WriteLine("No items with that tag.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Items tagged '" + tagName + "':");
-                                foreach (int i in indices)
-                                {
-                                    Console.WriteLine("  " + (i + 1) + ". " + tasks[i]);
-                                }
-                            }
-                        }
-                    }
+                    GetTaggedItems(parts);
                     break;
 
                 default:
@@ -169,6 +61,151 @@ class TodoApp
             }
 
             Console.WriteLine();
+        }
+    }
+
+    static void AddTask(string[] parts)
+    {
+        if (parts.Length < 2 || parts[1].Trim() == "")
+        {
+            Console.WriteLine("Error: .add needs an item");
+        }
+        else
+        {
+            tasks.Add(parts[1]);
+            Console.WriteLine("Added: " + parts[1]);
+        }
+    }
+
+    static void ShowTasks()
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("Nothing in the list.");
+        }
+        else
+        {
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                Console.WriteLine((i + 1) + ". " + tasks[i]);
+            }
+        }
+    }
+
+    static void RemoveTask(string[] parts)
+    {
+        if (parts.Length < 2)
+        {
+            Console.WriteLine("Error: remove needs an index");
+            return;
+        }
+
+        int index;
+        bool valid = int.TryParse(parts[1], out index);
+
+        if (!valid || index < 1 || index > tasks.Count)
+        {
+            Console.WriteLine("Error: index is not valid");
+            return;
+        }
+
+        int realIndex = index - 1;
+        string removed = tasks[realIndex];
+
+        tasks.RemoveAt(realIndex);
+        UpdateTagIndexes(realIndex);
+
+        Console.WriteLine("Removed: " + removed);
+    }
+
+    static void UpdateTagIndexes(int removedIndex)
+    {
+        foreach (var tagList in tags.Values)
+        {
+            tagList.Remove(removedIndex);
+
+            for (int i = 0; i < tagList.Count; i++)
+            {
+                if (tagList[i] > removedIndex)
+                {
+                    tagList[i]--;
+                }
+            }
+        }
+    }
+
+    static void ClearTasks()
+    {
+        tasks.Clear();
+        tags.Clear();
+        Console.WriteLine("List cleared.");
+    }
+
+    static void AddTag(string[] parts)
+    {
+        if (parts.Length < 3)
+        {
+            Console.WriteLine("Error: .tag [index] [name]");
+            return;
+        }
+
+        int index;
+        bool valid = int.TryParse(parts[1], out index);
+
+        if (!valid || index < 1 || index > tasks.Count)
+        {
+            Console.WriteLine("Error: bad index");
+            return;
+        }
+
+        int realIndex = index - 1;
+        string tagName = parts[2];
+
+        if (!tags.ContainsKey(tagName))
+        {
+            tags[tagName] = new List<int>();
+        }
+
+        if (tags[tagName].Contains(realIndex))
+        {
+            Console.WriteLine("Already tagged.");
+        }
+        else
+        {
+            tags[tagName].Add(realIndex);
+            Console.WriteLine("Tagged item " + index + " with '" + tagName + "'");
+        }
+    }
+
+    static void GetTaggedItems(string[] parts)
+    {
+        if (parts.Length < 2)
+        {
+            Console.WriteLine("Error: get-tagged [tag name]");
+            return;
+        }
+
+        string tagName = parts[1];
+
+        if (!tags.ContainsKey(tagName))
+        {
+            Console.WriteLine("Error: tag doesn't exist");
+            return;
+        }
+
+        List<int> indices = tags[tagName];
+
+        if (indices.Count == 0)
+        {
+            Console.WriteLine("No items with that tag.");
+            return;
+        }
+
+        Console.WriteLine("Items tagged '" + tagName + "':");
+
+        foreach (int index in indices)
+        {
+            Console.WriteLine("  " + (index + 1) + ". " + tasks[index]);
         }
     }
 }

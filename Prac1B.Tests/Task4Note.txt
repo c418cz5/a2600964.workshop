@@ -1,0 +1,1 @@
+I extracted the command logic from the Main method into separate methods such as AddTask, ShowTasks and RemoveTask. This makes the Main method easier to read and gives each method a clear responsibility.
