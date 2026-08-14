@@ -25,4 +25,24 @@ public class Payroll
         this.rate = rate;
         this.taxRate = taxRate;
     }
+
+
+public decimal CalculateNetPay()
+    {
+        decimal grossPay = (decimal)hours * rate;
+        decimal taxAmount = grossPay * taxRate;
+        decimal netPay = grossPay - taxAmount;
+
+        return netPay;
+    }
+
+    public void ChangeTaxRate(decimal newTaxRate)
+    {
+        if (newTaxRate < 0)
+        {
+            throw new ArgumentException("Tax rate cannot be negative");
+        }
+
+        taxRate = newTaxRate;
+    }
 }
