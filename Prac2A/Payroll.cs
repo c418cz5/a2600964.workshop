@@ -1,36 +1,64 @@
 public class Payroll
 {
-    private double hours;
-    private decimal rate;
-    private decimal taxRate;
+    private double _hours;
+    private decimal _rate;
+    private decimal _taxRate;
+
+    public double Hours
+    {
+        get { return _hours; }
+
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException("Hours cannot be negative");
+            }
+
+            _hours = value;
+        }
+    }
+
+    public decimal Rate
+    {
+        get { return _rate; }
+
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException("Rate cannot be negative");
+            }
+
+            _rate = value;
+        }
+    }
+
+    public decimal TaxRate
+    {
+        get { return _taxRate; }
+
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException("Tax rate cannot be negative");
+            }
+
+            _taxRate = value;
+        }
+    }
 
     public Payroll(double hours, decimal rate, decimal taxRate)
     {
-        if (hours < 0)
-        {
-            throw new ArgumentException("Hours cannot be negative");
-        }
-
-        if (rate < 0)
-        {
-            throw new ArgumentException("Rate cannot be negative");
-        }
-
-        if (taxRate < 0)
-        {
-            throw new ArgumentException("Tax rate cannot be negative");
-        }
-
-        this.hours = hours;
-        this.rate = rate;
-        this.taxRate = taxRate;
+        Hours = hours;
+        Rate = rate;
+        TaxRate = taxRate;
     }
-
-
-public decimal CalculateNetPay()
+    public decimal CalculateNetPay()
     {
-        decimal grossPay = (decimal)hours * rate;
-        decimal taxAmount = grossPay * taxRate;
+        decimal grossPay = (decimal)_hours * _rate;
+        decimal taxAmount = grossPay * _taxRate;
         decimal netPay = grossPay - taxAmount;
 
         return netPay;
@@ -38,11 +66,6 @@ public decimal CalculateNetPay()
 
     public void ChangeTaxRate(decimal newTaxRate)
     {
-        if (newTaxRate < 0)
-        {
-            throw new ArgumentException("Tax rate cannot be negative");
-        }
-
-        taxRate = newTaxRate;
+        TaxRate = newTaxRate;
     }
 }
