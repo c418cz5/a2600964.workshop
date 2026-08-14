@@ -14,8 +14,9 @@ a2600964.workshop/
 ├── HelloCSharp/ # First C# console app, environment test
 ├── Prac1B/ # Topic 1 practical tasks
 ├── Prac1B.Tests/ # Unit tests for Prac1B
+├── Prac2A/ # Payroll class and Program.cs
+├── Prac2A.Tests/ # Payroll xUnit tests
 └── README.md
-
 
 ---
 
@@ -38,9 +39,34 @@ a2600964.workshop/
 
 ---
 
-### Topic 2: (TBD)
 
-- To be updated.
+### Topic 2: Classes, Methods and Properties
+
+- **Status:** Complete
+- **Practical:** Payroll class, properties, xUnit tests and Git reflection
+
+#### Task 1: Refactoring to a Payroll Class
+
+Created a Payroll class with private fields, a constructor, CalculateNetPay() and ChangeTaxRate() methods.
+
+#### Task 2: Adding Properties
+
+Changed the fields into properties with validation. Negative hours, rate and tax rate values are not allowed.
+
+#### Task 3: Unit Tests
+
+Created an xUnit test project called Prac2A.Tests. The tests cover normal calculations, tax rate changes and invalid negative values.
+
+Payroll.cs achieved 100% line coverage and 100% branch coverage.
+
+
+#### Task 4 Reflection
+
+When I first wrote the payroll calculator, the calculations and validation were written in the main program. The code worked, but the payroll data and the program logic were in the same place.
+
+After changing it to a Payroll class, the fields, properties and methods are kept together. The Program.cs file is now shorter because it only creates a Payroll object and calls its methods. The properties also help prevent negative hours, rate and tax rate values.
+
+Static typing makes me specify the type of each variable, such as double and decimal. At first this feels more strict than procedural code, but it helps find mistakes when building the program. It also helped me notice the difference between double and decimal when working with payroll calculations.
 
 ---
 
@@ -62,3 +88,5 @@ dotnet run
 # Run unit tests
 cd ProjectName.Tests
 dotnet test
+
+
