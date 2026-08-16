@@ -1,0 +1,7 @@
+Task 4 Reflection
+
+Encapsulation means keeping data and the methods that use the data inside a class. In my BankAccount class, the Balance property has a private setter. This means other code can read the balance, but it cannot change it directly. The balance can only be changed through Deposit or Withdraw.
+
+Access modifiers are important because they control which parts of a class can be used by other code. Public members can be used outside the class, while private members are protected inside the class. This helps prevent unwanted changes and makes the class easier to use.
+
+I would explain method overloading to a Python programmer by saying that C# can have several methods with the same name, as long as their parameter types are different. For example, my BankAccount class has three Deposit methods for decimal, int and double values. C# chooses the correct method based on the type of the argument. In Python, this is usually handled inside one method because defining the same method name again replaces the previous method.
