@@ -49,4 +49,11 @@ public class BankAccount
 
         Balance = Balance - amount;
     }
+
+    public virtual void DisplayAccountInfo()
+    {
+        Console.WriteLine("Account: BankAccount");
+        Console.WriteLine($"Owner: {Owner}");
+        Console.WriteLine($"Balance: ${Balance:F2}");
+    }
 }
