@@ -1,10 +1,11 @@
-﻿FullTimeEmployee fullTime = new FullTimeEmployee("Bill", 6250m);
-Contractor contractor = new Contractor("Fred", 25m, 100m);
+﻿List<Employee> employees = new List<Employee>();
 
-Console.WriteLine(fullTime.GenerateReport());
-Console.WriteLine($"Calculated pay: ${fullTime.CalculatePay():F2}");
+employees.Add(new FullTimeEmployee("Bill", 6250m));
+employees.Add(new Contractor("Fred", 25m, 100m));
 
-Console.WriteLine();
+foreach (Employee employee in employees)
+{
+    decimal pay = employee.CalculatePay();
 
-Console.WriteLine(contractor.GenerateReport());
-Console.WriteLine($"Calculated pay: ${contractor.CalculatePay():F2}");
+    Console.WriteLine($"{employee.Name}: Pay ${pay:F2}");
+}
