@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Prac2B\Prac2B.csproj" />
+    <ProjectReference Include="..\PracA\Prac2A.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,8 +18,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Prac2A\Prac2A.csproj" />
-  </ItemGroup>
+<ItemGroup>
+  <ProjectReference Include="..\PracB\Prac2B.csproj" />
+</ItemGroup>
 
 </Project>
