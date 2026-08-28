@@ -46,7 +46,7 @@ public static class Program
     /// <param name="tachyonGrid">
     /// The grid containing the tachyon manifold.
     /// </param>
-    public static void processSplitter(
+    public static int processSplitter(
         int posX,
         int posY,
         List<string> tachyonGrid)
@@ -61,7 +61,9 @@ public static class Program
 
             line = sb.ToString();
             tachyonGrid[posY] = line;
+            return 1;
         }
+        return 0;
     }
 
     /// <summary>
@@ -126,7 +128,7 @@ public static class Program
                 }
                 else if (character == '^')
                 {
-                    processSplitter(posX, posY, tachyonGrid);
+                    totalCount += processSplitter(posX, posY, tachyonGrid);
                 }
                 else if (posY != 0)
                 {
