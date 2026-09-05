@@ -15,3 +15,5 @@ Therefore, I cannot directly use the `["Why", "isn't", ...]` syntax used for `Li
 I discovered that `LinkedList<T>` does not have an indexer like `Array` or `List`.
 So, I have to start from the first node and access elements one by one using `.Next`.
 Accessing the third or fifth element requires traversing the preceding nodes.
+
+After modifying Rick's age, Rick's age changed in both collections because the List and the LinkedList store references to the same Person object.
