@@ -20,9 +20,18 @@ foreach (var account in accountStack)
 
 var accountQueue = StackToQueue(accountStack);
 
-Console.WriteLine("\nQueue of bank accounts:");
+Console.WriteLine("\nQueue before sorting:");
 
 foreach (var account in accountQueue)
+{
+    Console.WriteLine(account);
+}
+
+var sortedQueue = SortQueue(accountQueue);
+
+Console.WriteLine("\nQueue after sorting:");
+
+foreach (var account in sortedQueue)
 {
     Console.WriteLine(account);
 }
@@ -38,4 +47,42 @@ static Queue<BankAccount> StackToQueue(Stack<BankAccount> stack)
     }
 
     return queue;
+}
+
+
+static Queue<BankAccount> SortQueue(Queue<BankAccount> queue)
+{
+    var sortedQueue = new Queue<BankAccount>();
+
+    while (queue.Count > 0)
+    {
+        var temporaryQueue = new Queue<BankAccount>();
+        BankAccount? lowestBalanceAccount = null;
+
+        while (queue.Count > 0)
+        {
+            var account = queue.Dequeue();
+            temporaryQueue.Enqueue(account);
+
+            if (lowestBalanceAccount is null ||
+                account.Balance < lowestBalanceAccount.Balance)
+            {
+                lowestBalanceAccount = account;
+            }
+        }
+
+        while (temporaryQueue.Count > 0)
+        {
+            var account = temporaryQueue.Dequeue();
+
+            if (account != lowestBalanceAccount)
+            {
+                queue.Enqueue(account);
+            }
+        }
+
+        sortedQueue.Enqueue(lowestBalanceAccount!);
+    }
+
+    return sortedQueue;
 }
