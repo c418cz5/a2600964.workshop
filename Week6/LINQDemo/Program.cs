@@ -44,3 +44,28 @@ foreach (var owner in queueOwners)
 {
     Console.WriteLine(owner);
 }
+var stackFilteredAccounts = accountStack
+    .Where(x => x.Owner.Contains("e"))
+    .Select(x => new { x.Owner, x.Balance })
+    .OrderBy(x => x.Balance)
+    .ToList();
+
+Console.WriteLine("\nStack accounts with an 'e' in the Owner:");
+
+foreach (var account in stackFilteredAccounts)
+{
+    Console.WriteLine($"{account.Owner}: {account.Balance:F2}");
+}
+
+var queueFilteredAccounts = accountQueue
+    .Where(x => x.Owner.Contains("e"))
+    .Select(x => new { x.Owner, x.Balance })
+    .OrderBy(x => x.Balance)
+    .ToList();
+
+Console.WriteLine("\nQueue accounts with an 'e' in the Owner:");
+
+foreach (var account in queueFilteredAccounts)
+{
+    Console.WriteLine($"{account.Owner}: {account.Balance:F2}");
+}
