@@ -1,30 +1,46 @@
-﻿var names = new List<string>
+﻿var accounts = new List<BankAccount>
 {
-    "Zoe",
-    "Charlie",
-    "Alice",
-    "Brian",
-    "Emily",
-    "David",
-    "Grace",
-    "Frank",
-    "Hannah",
-    "Oliver"
+    new BankAccount("Rick", 1000m),
+    new BankAccount("John", 2500m),
+    new BankAccount("Jane", 800m),
+    new BankAccount("Brian", 3200m),
+    new BankAccount("Lois", 1500m),
+    new BankAccount("Peter", 4500m),
+    new BankAccount("Stewie", 100m),
+    new BankAccount("Meg", 2000m),
+    new BankAccount("Klaus", 3700m),
+    new BankAccount("Kobe", 5000m)
 };
 
-Console.WriteLine("Original names:");
+var accountStack = new Stack<BankAccount>();
+var accountQueue = new Queue<BankAccount>();
 
-foreach (var name in names)
+foreach (var account in accounts)
 {
-    Console.WriteLine(name);
+    accountStack.Push(account);
+    accountQueue.Enqueue(account);
 }
 
-var orderedNames = names.OrderBy(x => x);
-var sortedNames = orderedNames.ToList();
+var stackOwners = accountStack
+    .Select(x => x.Owner)
+    .OrderBy(x => x)
+    .ToList();
 
-Console.WriteLine("\nSorted names:");
+Console.WriteLine("Stack owners ordered by name:");
 
-foreach (var name in sortedNames)
+foreach (var owner in stackOwners)
 {
-    Console.WriteLine(name);
+    Console.WriteLine(owner);
+}
+
+var queueOwners = accountQueue
+    .Select(x => x.Owner)
+    .OrderBy(x => x)
+    .ToList();
+
+Console.WriteLine("\nQueue owners ordered by name:");
+
+foreach (var owner in queueOwners)
+{
+    Console.WriteLine(owner);
 }
