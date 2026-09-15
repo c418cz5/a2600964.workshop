@@ -5,6 +5,12 @@ public class SortedSetDemo
 {
     public static void Run()
     {
+        RunScores();
+        RunAccounts();
+    }
+
+    static void RunScores()
+    {
         var scores = new SortedSet<int>();
         var random = new Random();
 
@@ -28,6 +34,45 @@ public class SortedSetDemo
         DisplayScores(scores);
     }
 
+    static void RunAccounts()
+    {
+        var accounts = new List<BankAccount>
+        {
+            new BankAccount("Rick", 1000),
+            new BankAccount("John", 2500),
+            new BankAccount("Jane", 800),
+            new BankAccount("Brian", 3200),
+            new BankAccount("Lois", 1500),
+            new BankAccount("Peter", 4500),
+            new BankAccount("Stewie", 100),
+            new BankAccount("Meg", 2000),
+            new BankAccount("Klaus", 3700),
+            new BankAccount("Kobe", 5000)
+        };
+
+        var sortedBankSet = new SortedSet<BankAccount>(new BankComparer());
+
+        foreach (var account in accounts)
+        {
+            sortedBankSet.Add(account);
+        }
+
+        Console.WriteLine("Bank accounts sorted by balance:");
+        DisplayAccounts(sortedBankSet);
+
+        var highAccount = new BankAccount("New High", 6000);
+        sortedBankSet.Add(highAccount);
+
+        Console.WriteLine("After adding a new high account:");
+        DisplayAccounts(sortedBankSet);
+
+        var duplicateAccount = new BankAccount("Rick", 1000);
+        var duplicateAdded = sortedBankSet.Add(duplicateAccount);
+
+        Console.WriteLine($"Trying to add duplicate account: {duplicateAdded}");
+        DisplayAccounts(sortedBankSet);
+    }
+
     static void DisplayScores(SortedSet<int> scores)
     {
         Console.WriteLine("Scores:");
@@ -41,5 +86,13 @@ public class SortedSetDemo
         Console.WriteLine($"Highest score: {scores.Max}");
         Console.WriteLine($"Number of scores: {scores.Count}");
         Console.WriteLine();
+    }
+
+    static void DisplayAccounts(SortedSet<BankAccount> accounts)
+    {
+        foreach (var account in accounts)
+        {
+            Console.WriteLine(account);
+        }
     }
 }
