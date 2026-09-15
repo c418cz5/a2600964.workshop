@@ -61,8 +61,7 @@ public class SortedSetDemo
         DisplayAccounts(sortedBankSet);
 
         var highAccount = new BankAccount("New High", 6000);
-        sortedBankSet.Add(highAccount);
-
+        sortedBankSet.Add(highAccount); 
         Console.WriteLine("After adding a new high account:");
         DisplayAccounts(sortedBankSet);
 
@@ -71,6 +70,8 @@ public class SortedSetDemo
 
         Console.WriteLine($"Trying to add duplicate account: {duplicateAdded}");
         DisplayAccounts(sortedBankSet);
+
+        MakePlot(sortedBankSet);
     }
 
     static void DisplayScores(SortedSet<int> scores)
@@ -94,5 +95,33 @@ public class SortedSetDemo
         {
             Console.WriteLine(account);
         }
+    }
+
+    static void MakePlot(SortedSet<BankAccount> accounts)
+    {
+        var balances = new double[accounts.Count];
+        var index = 0;
+
+        foreach (var account in accounts)
+        {
+            balances[index] = (double)account.Balance;
+            index++;
+        }
+
+        ScottPlot.Plot myPlot = new();
+
+        myPlot.Add.Bars(balances);
+
+        myPlot.YLabel("Account Balance");
+        myPlot.XLabel("Ranking");
+
+        myPlot.Axes.Left.Label.FontSize = 20;
+        myPlot.Axes.Bottom.Label.FontSize = 20;
+
+        myPlot.Axes.Margins(bottom: 0, top: .2);
+
+        myPlot.SavePng("Topic7A-Task3.png", 800, 600);
+
+        Console.WriteLine("Graph saved as Topic7A-Task3.png");
     }
 }
