@@ -1,1 +1,1 @@
-﻿PriorityQueueDemo.Run();
+﻿PriorityQueueDemo.RunTask4();
