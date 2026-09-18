@@ -25,3 +25,33 @@ This is similar to sorting players or game objects by a score, value, or another
 I converted the balances from the `SortedSet<BankAccount>` into a `double[]` and used ScottPlot to create a bar chart.
 
 The chart is saved as `Topic7A-Task3.png` with the labels `Ranking` and `Account Balance`. It helps make the ordered account data easier to understand visually.
+
+## Topic 7 Prac B Reflection
+
+### Task 1: SortedDictionary
+
+`SortedDictionary<int, string>` keeps the players ordered by their score automatically. It is backed by a balanced binary search tree, so it is useful for maintaining rankings.
+
+The top three scores were found by reversing the dictionary and using `Take(3)`. The bottom three were found using `Take(3)`. Adding another player with the same score caused an `ArgumentException` because dictionary keys must be unique. Adding the same player name with a different score worked because the name is only a value, not a key.
+
+### Task 2: ScoreEntry and Player
+
+When I first used `ScoreEntry` as the key, the program produced an error because `ScoreEntry` did not implement `IComparable`. I fixed this by creating a `ScoreComparer`.
+
+The comparer first compares the score and then compares `StageReached` when two scores are the same. This allows two players to have the same score if they reached different stages. The same `Player` object can also be used with different scores because only the keys need to be unique.
+
+This would be useful for a leaderboard where players can have the same score but different stages or achievement times.
+
+### Task 3: PriorityQueue with Integer Priorities
+
+`PriorityQueue<Player, int>` processes the player with the lowest priority number first. The data structure is based on a heap.
+
+Two players can have the same priority. Both players remain in the queue and are eventually processed. However, their order is not guaranteed when their priorities are equal. Unlike `SortedSet`, a `PriorityQueue` does not remove duplicate elements because it is designed to manage priority, not uniqueness.
+
+### Task 4: PriorityQueue with an Enum
+
+The enum worked without writing a custom comparer because enum values already have an underlying numeric order. `HighPriority` has the value `0`, `MediumPriority` has the value `1`, and `LowPriority` has the value `2`.
+
+If I used a custom struct with an integer property, I would normally need to implement `IComparable` or provide an `IComparer`. The priority queue would not automatically know how to compare two custom structs.
+
+Priority queues are useful for game events, AI actions, and scheduling tasks. For example, an enemy could attack before collecting an item if the attack event has a higher priority.
