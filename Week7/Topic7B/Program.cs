@@ -1,1 +1,1 @@
-﻿SortedDictionaryDemo.Run();  
+﻿PriorityQueueDemo.Run();
