@@ -1,8 +1,8 @@
+
 using System;
 using System.Collections.Generic;
 
 namespace RecipeManagement.Core;
-
 /// <summary>
 /// Implement this class using the five Part A collections as private fields:
 /// Dictionary&lt;int, Recipe&gt;, List&lt;string&gt;, LinkedList&lt;int&gt;,
@@ -23,47 +23,37 @@ public sealed class RecipeManager : IRecipeManager
         {
             throw new ArgumentNullException(nameof(recipes));
         }
-
         _recipes = new Dictionary<int, Recipe>();
         _shoppingList = new List<string>();
         _cookingPlan = new LinkedList<int>();
         _removedRecipes = new Stack<int>();
         _instructionQueue = new Queue<string>();
-
         foreach (Recipe recipe in recipes)
         {
             if (recipe is null)
             {
                 throw new ArgumentException("Recipe collection contains a null element.", nameof(recipes));
             }
-
             if (recipe.Id <= 0)
             {
                 throw new ArgumentException($"Recipe ID must be positive, but got {recipe.Id}.", nameof(recipes));
             }
-
             if (string.IsNullOrWhiteSpace(recipe.Title))
             {
                 throw new ArgumentException($"Recipe with ID {recipe.Id} has a blank title.", nameof(recipes));
             }
-
             if (_recipes.ContainsKey(recipe.Id))
             {
                 throw new ArgumentException($"Duplicate recipe ID: {recipe.Id}.", nameof(recipes));
             }
-
             _recipes.Add(recipe.Id, recipe);
         }
     }
 
     public int RecipeCount => _recipes.Count;
-
     public int ShoppingItemCount => 0;
-
-    public int CookingPlanCount => 0;
-
+    public int CookingPlanCount => _cookingPlan.Count;
     public int PendingInstructionCount => 0;
-
     public int RemovedRecipeCount => 0;
 
     public Recipe? FindRecipe(int recipeId)
@@ -72,35 +62,30 @@ public sealed class RecipeManager : IRecipeManager
         {
             return recipe;
         }
-
         return null;
     }
 
-public bool AddRecipe(Recipe recipe)
-{
-    if (recipe is null)
+    public bool AddRecipe(Recipe recipe)
     {
-        throw new ArgumentNullException(nameof(recipe));
+        if (recipe is null)
+        {
+            throw new ArgumentNullException(nameof(recipe));
+        }
+        if (recipe.Id <= 0)
+        {
+            return false;
+        }
+        if (string.IsNullOrWhiteSpace(recipe.Title))
+        {
+            return false;
+        }
+        if (_recipes.ContainsKey(recipe.Id))
+        {
+            return false;
+        }
+        _recipes.Add(recipe.Id, recipe);
+        return true;
     }
-
-    if (recipe.Id <= 0)
-    {
-        return false;
-    }
-
-    if (string.IsNullOrWhiteSpace(recipe.Title))
-    {
-        return false;
-    }
-
-    if (_recipes.ContainsKey(recipe.Id))
-    {
-        return false;
-    }
-
-    _recipes.Add(recipe.Id, recipe);
-    return true;
-}
 
     public bool RemoveRecipe(int recipeId) =>
         throw new NotImplementedException("Part A: implement RemoveRecipe.");
@@ -114,8 +99,19 @@ public bool AddRecipe(Recipe recipe)
     public void ClearShoppingList() =>
         throw new NotImplementedException("Part A: implement ClearShoppingList.");
 
-    public bool AddRecipeToCookingPlan(int recipeId) =>
-        throw new NotImplementedException("Part A: implement AddRecipeToCookingPlan.");
+    public bool AddRecipeToCookingPlan(int recipeId)
+    {
+        if (!_recipes.ContainsKey(recipeId))
+        {
+            return false;
+        }
+        if (_cookingPlan.Contains(recipeId))
+        {
+            return false;
+        }
+        _cookingPlan.AddLast(recipeId);
+        return true;
+    }
 
     public bool RemoveRecipeFromCookingPlan(int recipeId) =>
         throw new NotImplementedException("Part A: implement RemoveRecipeFromCookingPlan.");
