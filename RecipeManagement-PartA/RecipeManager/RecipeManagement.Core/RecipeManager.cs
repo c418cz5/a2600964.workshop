@@ -76,8 +76,31 @@ public sealed class RecipeManager : IRecipeManager
         return null;
     }
 
-    public bool AddRecipe(Recipe recipe) =>
-        throw new NotImplementedException("Part A: implement AddRecipe.");
+public bool AddRecipe(Recipe recipe)
+{
+    if (recipe is null)
+    {
+        throw new ArgumentNullException(nameof(recipe));
+    }
+
+    if (recipe.Id <= 0)
+    {
+        return false;
+    }
+
+    if (string.IsNullOrWhiteSpace(recipe.Title))
+    {
+        return false;
+    }
+
+    if (_recipes.ContainsKey(recipe.Id))
+    {
+        return false;
+    }
+
+    _recipes.Add(recipe.Id, recipe);
+    return true;
+}
 
     public bool RemoveRecipe(int recipeId) =>
         throw new NotImplementedException("Part A: implement RemoveRecipe.");
