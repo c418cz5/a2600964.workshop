@@ -10,25 +10,74 @@ namespace RecipeManagement.Core;
 /// </summary>
 public sealed class RecipeManager : IRecipeManager
 {
-    // TODO Part A: add your private collection fields here.
+    // Part A: five private collection fields
+    private readonly Dictionary<int, Recipe> _recipes;
+    private readonly List<string> _shoppingList;
+    private readonly LinkedList<int> _cookingPlan;
+    private readonly Stack<int> _removedRecipes;
+    private readonly Queue<string> _instructionQueue;
 
     public RecipeManager(IEnumerable<Recipe> recipes)
     {
-        // TODO Part A: validate recipes and build Dictionary<int, Recipe>.
-        _ = recipes;
+        if (recipes is null)
+        {
+            throw new ArgumentNullException(nameof(recipes));
+        }
+
+        _recipes = new Dictionary<int, Recipe>();
+        _shoppingList = new List<string>();
+        _cookingPlan = new LinkedList<int>();
+        _removedRecipes = new Stack<int>();
+        _instructionQueue = new Queue<string>();
+
+        foreach (Recipe recipe in recipes)
+        {
+            if (recipe is null)
+            {
+                throw new ArgumentException("Recipe collection contains a null element.", nameof(recipes));
+            }
+
+            if (recipe.Id <= 0)
+            {
+                throw new ArgumentException($"Recipe ID must be positive, but got {recipe.Id}.", nameof(recipes));
+            }
+
+            if (string.IsNullOrWhiteSpace(recipe.Title))
+            {
+                throw new ArgumentException($"Recipe with ID {recipe.Id} has a blank title.", nameof(recipes));
+            }
+
+            if (_recipes.ContainsKey(recipe.Id))
+            {
+                throw new ArgumentException($"Duplicate recipe ID: {recipe.Id}.", nameof(recipes));
+            }
+
+            _recipes.Add(recipe.Id, recipe);
+        }
     }
 
-    public int RecipeCount => 0;
+    public int RecipeCount => _recipes.Count;
+
     public int ShoppingItemCount => 0;
+
     public int CookingPlanCount => 0;
+
     public int PendingInstructionCount => 0;
+
     public int RemovedRecipeCount => 0;
+
+    public Recipe? FindRecipe(int recipeId)
+    {
+        if (_recipes.TryGetValue(recipeId, out Recipe? recipe))
+        {
+            return recipe;
+        }
+
+        return null;
+    }
 
     public bool AddRecipe(Recipe recipe) =>
         throw new NotImplementedException("Part A: implement AddRecipe.");
-
-    public Recipe? FindRecipe(int recipeId) =>
-        throw new NotImplementedException("Part A: implement FindRecipe.");
 
     public bool RemoveRecipe(int recipeId) =>
         throw new NotImplementedException("Part A: implement RemoveRecipe.");
