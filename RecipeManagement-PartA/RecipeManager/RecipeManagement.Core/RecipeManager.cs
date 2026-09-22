@@ -1,7 +1,5 @@
-
 using System;
 using System.Collections.Generic;
-
 namespace RecipeManagement.Core;
 /// <summary>
 /// Implement this class using the five Part A collections as private fields:
@@ -10,7 +8,6 @@ namespace RecipeManagement.Core;
 /// </summary>
 public sealed class RecipeManager : IRecipeManager
 {
-    // Part A: five private collection fields
     private readonly Dictionary<int, Recipe> _recipes;
     private readonly List<string> _shoppingList;
     private readonly LinkedList<int> _cookingPlan;
@@ -54,7 +51,7 @@ public sealed class RecipeManager : IRecipeManager
     public int ShoppingItemCount => 0;
     public int CookingPlanCount => _cookingPlan.Count;
     public int PendingInstructionCount => 0;
-    public int RemovedRecipeCount => 0;
+    public int RemovedRecipeCount => _removedRecipes.Count;
 
     public Recipe? FindRecipe(int recipeId)
     {
@@ -113,8 +110,17 @@ public sealed class RecipeManager : IRecipeManager
         return true;
     }
 
-    public bool RemoveRecipeFromCookingPlan(int recipeId) =>
-        throw new NotImplementedException("Part A: implement RemoveRecipeFromCookingPlan.");
+    public bool RemoveRecipeFromCookingPlan(int recipeId)
+    {
+        LinkedListNode<int>? node = _cookingPlan.Find(recipeId);
+        if (node is null)
+        {
+            return false;
+        }
+        _cookingPlan.Remove(node);
+        _removedRecipes.Push(recipeId);
+        return true;
+    }
 
     public bool RestoreLastRemovedRecipe() =>
         throw new NotImplementedException("Part A: implement RestoreLastRemovedRecipe.");
