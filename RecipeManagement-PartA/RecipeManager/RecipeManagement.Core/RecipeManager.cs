@@ -50,7 +50,7 @@ public sealed class RecipeManager : IRecipeManager
     public int RecipeCount => _recipes.Count;
     public int ShoppingItemCount => 0;
     public int CookingPlanCount => _cookingPlan.Count;
-    public int PendingInstructionCount => 0;
+    public int PendingInstructionCount => _instructionQueue.Count;
     public int RemovedRecipeCount => _removedRecipes.Count;
 
     public Recipe? FindRecipe(int recipeId)
@@ -154,14 +154,42 @@ public sealed class RecipeManager : IRecipeManager
         return new List<int>(_cookingPlan);
     }
 
-    public bool StartCooking(int recipeId) =>
-        throw new NotImplementedException("Part A: implement StartCooking.");
+    public bool StartCooking(int recipeId)
+    {
+        if (!_recipes.TryGetValue(recipeId, out Recipe? recipe))
+        {
+            return false;
+        }
+        if (recipe.Instructions.Count == 0)
+        {
+            return false;
+        }
 
-    public string? PeekNextInstruction() =>
-        throw new NotImplementedException("Part A: implement PeekNextInstruction.");
+        _instructionQueue.Clear();
+        foreach (string instruction in recipe.Instructions)
+        {
+            _instructionQueue.Enqueue(instruction);
+        }
+        return true;
+    }
 
-    public string? CompleteNextInstruction() =>
-        throw new NotImplementedException("Part A: implement CompleteNextInstruction.");
+    public string? PeekNextInstruction()
+    {
+        if (_instructionQueue.TryPeek(out string? instruction))
+        {
+            return instruction;
+        }
+        return null;
+    }
+
+    public string? CompleteNextInstruction()
+    {
+        if (_instructionQueue.Count == 0)
+        {
+            return null;
+        }
+        return _instructionQueue.Dequeue();
+    }
 
     public IReadOnlyList<Recipe> SearchByTitle(string searchText) =>
         throw new NotImplementedException("Part B: implement SearchByTitle.");
