@@ -149,8 +149,10 @@ public sealed class RecipeManager : IRecipeManager
         return null;
     }
 
-    public IReadOnlyList<int> GetCookingPlan() =>
-        throw new NotImplementedException("Part A: implement GetCookingPlan.");
+    public IReadOnlyList<int> GetCookingPlan()
+    {
+        return new List<int>(_cookingPlan);
+    }
 
     public bool StartCooking(int recipeId) =>
         throw new NotImplementedException("Part A: implement StartCooking.");
