@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+
 namespace RecipeManagement.Core;
+
 /// <summary>
 /// Implement this class using the five Part A collections as private fields:
 /// Dictionary&lt;int, Recipe&gt;, List&lt;string&gt;, LinkedList&lt;int&gt;,
@@ -20,38 +22,57 @@ public sealed class RecipeManager : IRecipeManager
         {
             throw new ArgumentNullException(nameof(recipes));
         }
+
         _recipes = new Dictionary<int, Recipe>();
         _shoppingList = new List<string>();
         _cookingPlan = new LinkedList<int>();
         _removedRecipes = new Stack<int>();
         _instructionQueue = new Queue<string>();
+
         foreach (Recipe recipe in recipes)
         {
             if (recipe is null)
             {
-                throw new ArgumentException("Recipe collection contains a null element.", nameof(recipes));
+                throw new ArgumentException(
+                    "Recipe collection contains a null element.",
+                    nameof(recipes));
             }
+
             if (recipe.Id <= 0)
             {
-                throw new ArgumentException($"Recipe ID must be positive, but got {recipe.Id}.", nameof(recipes));
+                throw new ArgumentException(
+                    $"Recipe ID must be positive, but got {recipe.Id}.",
+                    nameof(recipes));
             }
+
             if (string.IsNullOrWhiteSpace(recipe.Title))
             {
-                throw new ArgumentException($"Recipe with ID {recipe.Id} has a blank title.", nameof(recipes));
+                throw new ArgumentException(
+                    $"Recipe with ID {recipe.Id} has a blank title.",
+                    nameof(recipes));
             }
+
             if (_recipes.ContainsKey(recipe.Id))
             {
-                throw new ArgumentException($"Duplicate recipe ID: {recipe.Id}.", nameof(recipes));
+                throw new ArgumentException(
+                    $"Duplicate recipe ID: {recipe.Id}.",
+                    nameof(recipes));
             }
+
             _recipes.Add(recipe.Id, recipe);
         }
     }
 
     public int RecipeCount => _recipes.Count;
-    public int ShoppingItemCount => 0;
+
+    public int ShoppingItemCount => _shoppingList.Count;
+
     public int CookingPlanCount => _cookingPlan.Count;
+
     public int PendingInstructionCount => _instructionQueue.Count;
+
     public int RemovedRecipeCount => _removedRecipes.Count;
+
 
     public Recipe? FindRecipe(int recipeId)
     {
@@ -59,8 +80,10 @@ public sealed class RecipeManager : IRecipeManager
         {
             return recipe;
         }
+
         return null;
     }
+
 
     public bool AddRecipe(Recipe recipe)
     {
@@ -68,33 +91,70 @@ public sealed class RecipeManager : IRecipeManager
         {
             throw new ArgumentNullException(nameof(recipe));
         }
+
         if (recipe.Id <= 0)
         {
             return false;
         }
+
         if (string.IsNullOrWhiteSpace(recipe.Title))
         {
             return false;
         }
+
         if (_recipes.ContainsKey(recipe.Id))
         {
             return false;
         }
+
         _recipes.Add(recipe.Id, recipe);
         return true;
     }
 
-    public bool RemoveRecipe(int recipeId) =>
-        throw new NotImplementedException("Part A: implement RemoveRecipe.");
 
-    public int AddIngredientsToShoppingList(int recipeId) =>
-        throw new NotImplementedException("Part A: implement AddIngredientsToShoppingList.");
+    public bool RemoveRecipe(int recipeId)
+    {
+        if (!_recipes.ContainsKey(recipeId))
+        {
+            return false;
+        }
 
-    public IReadOnlyList<string> GetShoppingList() =>
-        throw new NotImplementedException("Part A: implement GetShoppingList.");
+        if (_cookingPlan.Contains(recipeId))
+        {
+            return false;
+        }
 
-    public void ClearShoppingList() =>
-        throw new NotImplementedException("Part A: implement ClearShoppingList.");
+        return _recipes.Remove(recipeId);
+    }
+
+
+    public int AddIngredientsToShoppingList(int recipeId)
+    {
+        if (!_recipes.TryGetValue(recipeId, out Recipe? recipe))
+        {
+            return 0;
+        }
+
+        foreach (string ingredient in recipe.Ingredients)
+        {
+            _shoppingList.Add(ingredient);
+        }
+
+        return recipe.Ingredients.Count;
+    }
+
+
+    public IReadOnlyList<string> GetShoppingList()
+    {
+        return new List<string>(_shoppingList);
+    }
+
+
+    public void ClearShoppingList()
+    {
+        _shoppingList.Clear();
+    }
+
 
     public bool AddRecipeToCookingPlan(int recipeId)
     {
@@ -102,25 +162,32 @@ public sealed class RecipeManager : IRecipeManager
         {
             return false;
         }
+
         if (_cookingPlan.Contains(recipeId))
         {
             return false;
         }
+
         _cookingPlan.AddLast(recipeId);
         return true;
     }
 
+
     public bool RemoveRecipeFromCookingPlan(int recipeId)
     {
         LinkedListNode<int>? node = _cookingPlan.Find(recipeId);
+
         if (node is null)
         {
             return false;
         }
+
         _cookingPlan.Remove(node);
         _removedRecipes.Push(recipeId);
+
         return true;
     }
+
 
     public bool RestoreLastRemovedRecipe()
     {
@@ -140,19 +207,23 @@ public sealed class RecipeManager : IRecipeManager
         return false;
     }
 
+
     public int? PeekLastRemovedRecipe()
     {
         if (_removedRecipes.TryPeek(out int value))
         {
             return value;
         }
+
         return null;
     }
+
 
     public IReadOnlyList<int> GetCookingPlan()
     {
         return new List<int>(_cookingPlan);
     }
+
 
     public bool StartCooking(int recipeId)
     {
@@ -160,18 +231,22 @@ public sealed class RecipeManager : IRecipeManager
         {
             return false;
         }
+
         if (recipe.Instructions.Count == 0)
         {
             return false;
         }
 
         _instructionQueue.Clear();
+
         foreach (string instruction in recipe.Instructions)
         {
             _instructionQueue.Enqueue(instruction);
         }
+
         return true;
     }
+
 
     public string? PeekNextInstruction()
     {
@@ -179,8 +254,10 @@ public sealed class RecipeManager : IRecipeManager
         {
             return instruction;
         }
+
         return null;
     }
+
 
     public string? CompleteNextInstruction()
     {
@@ -188,27 +265,42 @@ public sealed class RecipeManager : IRecipeManager
         {
             return null;
         }
+
         return _instructionQueue.Dequeue();
     }
 
+
     public IReadOnlyList<Recipe> SearchByTitle(string searchText) =>
-        throw new NotImplementedException("Part B: implement SearchByTitle.");
+        throw new NotImplementedException(
+            "Part B: implement SearchByTitle.");
+
 
     public IReadOnlyList<Recipe> SearchByIngredient(string searchText) =>
-        throw new NotImplementedException("Part B: implement SearchByIngredient.");
+        throw new NotImplementedException(
+            "Part B: implement SearchByIngredient.");
+
 
     public IReadOnlyList<Recipe> GetHighestProteinRecipes(int count) =>
-        throw new NotImplementedException("Part B: implement GetHighestProteinRecipes.");
+        throw new NotImplementedException(
+            "Part B: implement GetHighestProteinRecipes.");
+
 
     public bool AddSavedRecipe(int recipeId) =>
-        throw new NotImplementedException("Part B: implement AddSavedRecipe.");
+        throw new NotImplementedException(
+            "Part B: implement AddSavedRecipe.");
+
 
     public bool RemoveSavedRecipe(int recipeId) =>
-        throw new NotImplementedException("Part B: implement RemoveSavedRecipe.");
+        throw new NotImplementedException(
+            "Part B: implement RemoveSavedRecipe.");
+
 
     public bool IsRecipeSaved(int recipeId) =>
-        throw new NotImplementedException("Part B: implement IsRecipeSaved.");
+        throw new NotImplementedException(
+            "Part B: implement IsRecipeSaved.");
+
 
     public IReadOnlyList<int> GetSavedRecipes() =>
-        throw new NotImplementedException("Part B: implement GetSavedRecipes.");
+        throw new NotImplementedException(
+            "Part B: implement GetSavedRecipes.");
 }
