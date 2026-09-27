@@ -221,6 +221,28 @@ public sealed class RecipeManagerTests
         Assert.Null(manager.FindRecipe(10));
     }
 
+    [Fact]
+    public void RemoveRecipe_PlannedRecipe_ReturnsFalse()
+    {
+        var manager = CreateManager();
+
+        manager.AddRecipeToCookingPlan(10);
+
+        Assert.False(manager.RemoveRecipe(10));
+        Assert.Equal(2, manager.RecipeCount);
+        Assert.NotNull(manager.FindRecipe(10));
+    }
+
+    [Fact]
+    public void RemoveRecipeFromCookingPlan_UnplannedRecipe_DoesNotChangeHistory()
+    {
+        var manager = CreateManager();
+
+        Assert.False(manager.RemoveRecipeFromCookingPlan(10));
+        Assert.Equal(0, manager.RemovedRecipeCount);
+        Assert.Null(manager.PeekLastRemovedRecipe());
+    }
+
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]
