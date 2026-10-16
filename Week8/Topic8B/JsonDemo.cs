@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 
 public class JsonDemo
 {
@@ -18,23 +17,11 @@ public class JsonDemo
 
         string path = @"../Attachments/players.json";
 
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = true
-        };
+        FileHelper.FileWriter<List<Player>>(path, players);
 
-        string jsonString = JsonSerializer.Serialize(players, options);
-
-        Console.WriteLine("Players as JSON:");
-        Console.WriteLine(jsonString);
-
-        File.WriteAllText(path, jsonString);
-
-        string loadedJson = File.ReadAllText(path);
         List<Player> loadedPlayers =
-            JsonSerializer.Deserialize<List<Player>>(loadedJson)!;
+            FileHelper.FileReader<List<Player>>(path);
 
-        Console.WriteLine();
         Console.WriteLine($"Loaded players: {loadedPlayers.Count}");
 
         foreach (var player in loadedPlayers)
