@@ -1,0 +1,32 @@
+[
+  {
+    "Name": "Player A",
+    "Health": 100,
+    "Attack": 10,
+    "Defence": 5
+  },
+  {
+    "Name": "Player B",
+    "Health": 120,
+    "Attack": 15,
+    "Defence": 8
+  },
+  {
+    "Name": "Player C",
+    "Health": 90,
+    "Attack": 20,
+    "Defence": 4
+  },
+  {
+    "Name": "Player D",
+    "Health": 150,
+    "Attack": 12,
+    "Defence": 10
+  },
+  {
+    "Name": "Player E",
+    "Health": 80,
+    "Attack": 25,
+    "Defence": 3
+  }
+]
