@@ -1,1 +1,1 @@
-﻿LinkedListMemoryDemo.Run();
+﻿MemoryBenchmarkDemo.RunLinkedList();
