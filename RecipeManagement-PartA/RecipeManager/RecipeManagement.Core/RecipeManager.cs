@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RecipeManagement.Core;
 
@@ -15,6 +16,7 @@ public sealed class RecipeManager : IRecipeManager
     private readonly LinkedList<int> _cookingPlan;
     private readonly Stack<int> _removedRecipes;
     private readonly Queue<string> _instructionQueue;
+    private readonly HashSet<int> _savedRecipes;
 
     public RecipeManager(IEnumerable<Recipe> recipes)
     {
@@ -28,6 +30,7 @@ public sealed class RecipeManager : IRecipeManager
         _cookingPlan = new LinkedList<int>();
         _removedRecipes = new Stack<int>();
         _instructionQueue = new Queue<string>();
+        _savedRecipes = new HashSet<int>();
 
         foreach (Recipe recipe in recipes)
         {
@@ -270,9 +273,18 @@ public sealed class RecipeManager : IRecipeManager
     }
 
 
-    public IReadOnlyList<Recipe> SearchByTitle(string searchText) =>
-        throw new NotImplementedException(
-            "Part B: implement SearchByTitle.");
+    public IReadOnlyList<Recipe> SearchByTitle(string searchText)
+    {
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            return _recipes.Values.ToList();
+        }
+
+        return _recipes.Values
+            .Where(recipe => recipe.Title.Contains(
+                searchText, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+    }
 
 
     public IReadOnlyList<Recipe> SearchByIngredient(string searchText) =>
