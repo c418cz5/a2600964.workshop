@@ -19,6 +19,12 @@ graph.AddEdge(D, G);
 graph.AddEdge(E, H);
 graph.AddEdge(F, I);
 
-Console.WriteLine("Graph nodes and edges:");
-Console.WriteLine(graph);
-Console.WriteLine($"Number of nodes: {graph.Nodes.Count}");
+Console.WriteLine("Initial graph BFS:");
+BfsDemo.Run(A, I);
+
+graph.AddEdge(G, H);
+graph.AddEdge(H, I);
+
+Console.WriteLine();
+Console.WriteLine("Adjusted graph BFS:");
+BfsDemo.Run(A, I);
