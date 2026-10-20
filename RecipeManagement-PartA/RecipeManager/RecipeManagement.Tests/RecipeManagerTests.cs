@@ -243,6 +243,39 @@ public sealed class RecipeManagerTests
         Assert.Null(manager.PeekLastRemovedRecipe());
     }
 
+    [Fact]
+    public void SearchByTitle_PartialText_IgnoresCase()
+    {
+        var manager = CreateManager();
+
+        IReadOnlyList<Recipe> results = manager.SearchByTitle("CIPE A");
+
+        Recipe recipe = Assert.Single(results);
+        Assert.Equal(10, recipe.Id);
+    }
+
+    [Fact]
+    public void SearchByTitle_NoMatch_ReturnsEmpty()
+    {
+        var manager = CreateManager();
+
+        IReadOnlyList<Recipe> results = manager.SearchByTitle("Soup");
+
+        Assert.Empty(results);
+    }
+
+    [Fact]
+    public void SearchByTitle_BlankText_ReturnsAllRecipes()
+    {
+        var manager = CreateManager();
+
+        IReadOnlyList<Recipe> results = manager.SearchByTitle("   ");
+
+        Assert.Equal(2, results.Count);
+        Assert.Contains(results, recipe => recipe.Id == 10);
+        Assert.Contains(results, recipe => recipe.Id == 20);
+    }
+
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]
