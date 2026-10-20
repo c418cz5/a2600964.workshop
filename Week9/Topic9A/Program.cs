@@ -19,12 +19,16 @@ graph.AddEdge(D, G);
 graph.AddEdge(E, H);
 graph.AddEdge(F, I);
 
-Console.WriteLine("Initial graph BFS:");
-BfsDemo.Run(A, I);
+Console.WriteLine("Initial graph DFS:");
+DfsDemo.Run(A, I);
 
+graph.AddEdge(D, E);
+graph.AddEdge(E, F);
+graph.AddEdge(F, H);
 graph.AddEdge(G, H);
 graph.AddEdge(H, I);
 
 Console.WriteLine();
-Console.WriteLine("Adjusted graph BFS:");
-BfsDemo.Run(A, I);
+Console.WriteLine("Adjusted graph DFS:");
+DfsDemo.Run(A, I);
+
