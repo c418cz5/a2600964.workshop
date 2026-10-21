@@ -412,6 +412,28 @@ public sealed class RecipeManagerTests
         Assert.Equal(20, Assert.Single(manager.GetSavedRecipes()));
     }
 
+    [Fact]
+    public void SearchSaveAndUnsaveRecipe_IntegratedWorkflow()
+    {
+        var manager = CreateManager();
+
+        IReadOnlyList<Recipe> results = manager.SearchByTitle("CIPE A");
+
+        Recipe recipe = Assert.Single(results);
+        Assert.Equal(10, recipe.Id);
+
+        Assert.True(manager.AddSavedRecipe(recipe.Id));
+        Assert.True(manager.IsRecipeSaved(recipe.Id));
+        Assert.Equal(recipe.Id, Assert.Single(manager.GetSavedRecipes()));
+
+        Assert.True(manager.RemoveSavedRecipe(recipe.Id));
+        Assert.False(manager.IsRecipeSaved(recipe.Id));
+        Assert.Empty(manager.GetSavedRecipes());
+
+        Assert.Equal(2, manager.RecipeCount);
+        Assert.NotNull(manager.FindRecipe(recipe.Id));
+    }
+
     private static RecipeManager CreateProteinManager()
     {
         return new RecipeManager(new[]
