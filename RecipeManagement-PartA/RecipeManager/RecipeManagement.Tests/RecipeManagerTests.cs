@@ -353,6 +353,65 @@ public sealed class RecipeManagerTests
         Assert.Empty(manager.GetHighestProteinRecipes(-1));
     }
 
+    [Fact]
+    public void AddSavedRecipe_ExistingRecipes_SavesIds()
+    {
+        var manager = CreateManager();
+
+        Assert.False(manager.IsRecipeSaved(10));
+
+        Assert.True(manager.AddSavedRecipe(10));
+        Assert.True(manager.AddSavedRecipe(20));
+
+        Assert.True(manager.IsRecipeSaved(10));
+        Assert.True(manager.IsRecipeSaved(20));
+
+        IReadOnlyList<int> saved = manager.GetSavedRecipes();
+
+        Assert.Equal(2, saved.Count);
+        Assert.Contains(10, saved);
+        Assert.Contains(20, saved);
+    }
+
+    [Fact]
+    public void AddSavedRecipe_DuplicateId_ReturnsFalse()
+    {
+        var manager = CreateManager();
+
+        Assert.True(manager.AddSavedRecipe(10));
+        Assert.False(manager.AddSavedRecipe(10));
+
+        Assert.Equal(10, Assert.Single(manager.GetSavedRecipes()));
+    }
+
+    [Fact]
+    public void AddSavedRecipe_MissingId_ReturnsFalse()
+    {
+        var manager = CreateManager();
+
+        Assert.True(manager.AddSavedRecipe(10));
+        Assert.False(manager.AddSavedRecipe(999));
+
+        Assert.False(manager.IsRecipeSaved(999));
+        Assert.Equal(10, Assert.Single(manager.GetSavedRecipes()));
+    }
+
+    [Fact]
+    public void RemoveSavedRecipe_SavedRecipe_UpdatesSavedRecipes()
+    {
+        var manager = CreateManager();
+
+        Assert.True(manager.AddSavedRecipe(10));
+        Assert.True(manager.AddSavedRecipe(20));
+
+        Assert.True(manager.RemoveSavedRecipe(10));
+        Assert.False(manager.RemoveSavedRecipe(10));
+
+        Assert.False(manager.IsRecipeSaved(10));
+        Assert.True(manager.IsRecipeSaved(20));
+        Assert.Equal(20, Assert.Single(manager.GetSavedRecipes()));
+    }
+
     private static RecipeManager CreateProteinManager()
     {
         return new RecipeManager(new[]
