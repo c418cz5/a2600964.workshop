@@ -319,6 +319,81 @@ public sealed class RecipeManagerTests
         Assert.Equal(30, found.Id);
     }
 
+    [Fact]
+    public void GetHighestProteinRecipes_ReturnsHighestInDescendingOrder()
+    {
+        var manager = CreateProteinManager();
+
+        IReadOnlyList<Recipe> results = manager.GetHighestProteinRecipes(2);
+
+        Assert.Equal(2, results.Count);
+        Assert.Equal(20, results[0].Id);
+        Assert.Equal(10, results[1].Id);
+    }
+
+    [Fact]
+    public void GetHighestProteinRecipes_MissingData_ReturnsOnlyAvailableRecipes()
+    {
+        var manager = CreateProteinManager();
+
+        IReadOnlyList<Recipe> results = manager.GetHighestProteinRecipes(10);
+
+        Assert.Equal(3, results.Count);
+        Assert.Equal(20, results[0].Id);
+        Assert.Equal(10, results[1].Id);
+        Assert.Equal(30, results[2].Id);
+    }
+
+    [Fact]
+    public void GetHighestProteinRecipes_NonPositiveCount_ReturnsEmpty()
+    {
+        var manager = CreateProteinManager();
+
+        Assert.Empty(manager.GetHighestProteinRecipes(0));
+        Assert.Empty(manager.GetHighestProteinRecipes(-1));
+    }
+
+    private static RecipeManager CreateProteinManager()
+    {
+        return new RecipeManager(new[]
+        {
+            new Recipe
+            {
+                Id = 10,
+                Title = "Soup",
+                Nutrition = new NutritionInfo { ProteinG = 10 }
+            },
+
+            new Recipe
+            {
+                Id = 20,
+                Title = "Chicken",
+                Nutrition = new NutritionInfo { ProteinG = 30 }
+            },
+
+            new Recipe
+            {
+                Id = 30,
+                Title = "Tea",
+                Nutrition = new NutritionInfo { ProteinG = 0 }
+            },
+
+            new Recipe
+            {
+                Id = 40,
+                Title = "No Nutrition",
+                Nutrition = null
+            },
+
+            new Recipe
+            {
+                Id = 50,
+                Title = "No Protein",
+                Nutrition = new NutritionInfo { ProteinG = null }
+            }
+        });
+    }
+
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]
