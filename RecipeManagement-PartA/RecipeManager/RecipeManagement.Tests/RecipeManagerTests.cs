@@ -276,6 +276,49 @@ public sealed class RecipeManagerTests
         Assert.Contains(results, recipe => recipe.Id == 20);
     }
 
+    [Fact]
+    public void SearchByIngredient_PartialText_IgnoresCase()
+    {
+        var manager = CreateManager();
+
+        IReadOnlyList<Recipe> results = manager.SearchByIngredient("PPL");
+
+        Recipe recipe = Assert.Single(results);
+        Assert.Equal(10, recipe.Id);
+    }
+
+    [Fact]
+    public void SearchByIngredient_NoMatch_ReturnsEmpty()
+    {
+        var manager = CreateManager();
+
+        IReadOnlyList<Recipe> results = manager.SearchByIngredient("chicken");
+
+        Assert.Empty(results);
+    }
+
+    [Fact]
+    public void SearchByIngredient_MultipleMatchingIngredients_ReturnsRecipeOnce()
+    {
+        var recipe = new Recipe
+        {
+            Id = 30,
+            Title = "Apple Dessert",
+            Ingredients = new List<string>
+            {
+                "1 apple",
+                "100 ml apple juice"
+            }
+        };
+
+        var manager = new RecipeManager(new[] { recipe });
+
+        IReadOnlyList<Recipe> results = manager.SearchByIngredient("apple");
+
+        Recipe found = Assert.Single(results);
+        Assert.Equal(30, found.Id);
+    }
+
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]
