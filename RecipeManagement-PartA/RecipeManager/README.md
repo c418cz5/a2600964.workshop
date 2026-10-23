@@ -58,4 +58,4 @@ and removes it from saved recipes. It checks that the recipe
 still exists in the catalogue afterwards.
 
 ## AI acknowledgement
-All testing and code functionality were completed without the use of AI.
+All testing and code functionality were completed without the use of AI. I did not use generative AI in the preparation of this assignment. 
