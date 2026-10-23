@@ -1,40 +1,61 @@
-# Recipe Management System — Student Starter
+# Recipe Management System
 
-Starter repository for Parts A and B. Implement `RecipeManager` in Core; the Application menu and JSON loader are supplied.
+This is my C# assignment for Part A and Part B. I completed
+RecipeManager and added tests. The recipe models, JSON loader
+and console menu were provided in the starter code.
 
-## What is supplied
+## Project files
 
-- `RecipeManagement.Core/Models/` — recipe model classes
-- `RecipeManagement.Core/RecipeLoader.cs` — reads `data/recipes.json`
-- `RecipeManagement.Core/IRecipeManager.cs` — public API
-- `RecipeManagement.Application/` — console menu (options labelled PartA / PartB)
-- `RecipeManagement.Tests/` — example tests
-- `data/recipes.json` — recipe dataset
+- `RecipeManagement.Core/` — RecipeManager, models and JSON loader
+- `RecipeManagement.Application/` — console menu
+- `RecipeManagement.Tests/` — tests for both parts
+- `data/recipes.json` — recipe data
+- `Design.md` — explanation of my Part B design
 
-## What you implement
+## Part A
 
-**Part A** — `RecipeManager.cs` using:
+I used five collections:
 
-- `Dictionary<int, Recipe>`
-- `List<string>`
-- `LinkedList<int>`
-- `Stack<int>`
-- `Queue<string>`
+- `Dictionary<int, Recipe>` to store recipes by ID
+- `List<string>` for the shopping list
+- `LinkedList<int>` for the cooking plan
+- `Stack<int>` to store IDs removed from the cooking plan
+- `Queue<string>` to follow the cooking instructions in order
 
-**Part B** — LINQ searches, protein report, saved-recipe collection, `Design.md`, and more tests.
+## Part B
 
-## Build and run
+I added title and ingredient searches using LINQ. Both searches
+can match part of the text and ignore upper and lower case.
 
-Open `StudentPackage/RecipeManagement.sln`:
+The protein report lists recipes from highest to lowest protein.
+Recipes without protein information are left out.
 
-```bash
+I used a `HashSet<int>` to store saved recipe IDs. It prevents
+duplicates and supports adding, removing and checking saved recipes.
+
+## How to run
+
+Open a terminal in the folder containing `RecipeManagement.sln`.
+Then run:
+
+```powershell
 dotnet build
 dotnet test
 dotnet run --project RecipeManagement.Application -- data/recipes.json
 ```
 
-Until you implement `RecipeManager`, menu options print a **Not implemented** message.
+The program loads the recipe data and shows the menu.
+Options 15–21 are for Part B.
+
+## Tests
+
+The tests check normal operations and cases such as missing IDs,
+duplicates and empty collections.
+
+They also check searches, protein sorting and saved recipes.
+There is an integration test that searches for a recipe, saves it
+and removes it from saved recipes. It checks that the recipe
+still exists in the catalogue afterwards.
 
 ## AI acknowledgement
-
-Include the required AI acknowledgement statement in your submission as described in the assignment specification.
+All testing and code functionality were completed without the use of AI.
